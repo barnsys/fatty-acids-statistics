@@ -1,10 +1,8 @@
-library(devEMF)
 library(vegan)
 
-setwd("E:\\R_rab\\Жирные кислоты фитопланктона\\анализ финал\\PCA\\")
 
 #reading and preparation of source data
-data<-read.table("data.txt",header=TRUE,sep="\t")
+data<-read.table("data_lip.txt",header=TRUE,sep="\t")
 
 data<-data[,-1]
 
