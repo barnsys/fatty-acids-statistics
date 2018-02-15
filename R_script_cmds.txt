@@ -1,0 +1,35 @@
+library(devEMF)
+library(vegan)
+
+setwd("E:\\R_rab\\Жирные кислоты фитопланктона\\анализ финал\\PCA\\")
+
+#reading and preparation of source data
+data<-read.table("data.txt",header=TRUE,sep="\t")
+
+data<-data[,-1]
+
+Resp <- data[,c(1:31)]
+
+Expl <- data[,c(32:36)]
+
+
+#standard normalization of environmental vectors
+for(i in 1:ncol(Resp)) Resp[,i]<-(Resp[,i]-mean(Resp[,i]))/sd(Resp[,i])
+
+for(i in 1:ncol(Expl)) Expl[,i]<-(Expl[,i]-mean(Expl[,i]))/sd(Expl[,i])
+
+#non-metric multidimensional scaling with euclidean distance
+
+#d<-dist(Resp)
+ord <- metaMDS(Resp, distance = "euclidean")
+
+#fitting environmental variables
+ord.fit <- envfit(ord ~ S_acus+S_ulna+A._baicalensis+A_islandica+D_cylindricum, data=Expl, perm=1000)
+
+#viewing the results of calculations r2 and the permutation test
+ord.fit
+
+#visualization of multidimensional scaling results with environmental variables
+plot(ord, type = "n")
+text(ord, display = "site", cex=0.7, col="red")
+plot(ord.fit)
